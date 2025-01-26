@@ -18,6 +18,9 @@ GlyceraCare is a modern web project that showcases the brand's commitment to nat
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg" height="30" alt="tailwindcss logo"  />
 </div>
 
+## Live Link
+https://aarav2002.github.io/Glyceracare/
+
 ## Table of Contents
 
 - [Overview](#overview)

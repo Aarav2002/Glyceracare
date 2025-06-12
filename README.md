@@ -47,7 +47,7 @@ GlyceraCare was founded with a mission to create the finest natural soaps using 
 - **React.js**: Core framework for building the website's UI.
 - **Tailwind CSS**: For responsive and modern styling.
 - **Spline Viewer**: Embeds a 3D interactive background.
-- **Supabase**: Handles database operations for image management and admin authentication.
+- **MongoDB**: Handles database operations for image management and admin authentication.
 - **React Context API**: Manages authentication state.
 
 ## Installation
@@ -68,11 +68,10 @@ Follow these steps to set up the project locally:
    ```
 
 3. Set up environment variables:
-   Create a `.env` file in the root directory and add your Supabase credentials:
+   Create a `.env` file in the root directory and add your MOngoDB credentials:
 
    ```env
-   REACT_APP_SUPABASE_URL=your-supabase-url
-   REACT_APP_SUPABASE_ANON_KEY=your-supabase-anon-key
+   REACT_APP_MONGODB_URI=your-mongodb-url
    ```
 
 4. Run the development server:

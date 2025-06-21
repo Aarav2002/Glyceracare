@@ -37,10 +37,12 @@ GlyceraCare was founded with a mission to create the finest natural soaps using 
 
 ## Features
 
-- **3D Interactive Background**: Provides an immersive experience using Spline.
-- **Instagram Gallery**: Displays images dynamically fetched from the database.
-- **Admin Image Manager**: Allows authorized users to manage gallery images.
-- **Responsive Design**: Fully optimized for mobile and desktop devices.
+- 🎨**3D Interactive Background**: Provides an immersive experience using Spline.
+- 📷**Instagram Gallery**: Displays images dynamically fetched from the database.
+- 🛠️**Admin Image Manager**: Allows authorized users to manage gallery images.
+- 📱**Responsive Design**: Fully optimized for mobile and desktop devices.
+- 🤖 **AI Chatbot Integration**: Real-time, interactive chatbot that understands user queries using natural language processing.
+- 🧠 **NLP-Based Product Recommendations**: Smart product suggestion system that recommends personalized skincare routines based on user input and concerns (e.g., acne, dryness, oily skin).
 
 ## Technologies Used
 
@@ -49,6 +51,8 @@ GlyceraCare was founded with a mission to create the finest natural soaps using 
 - **Spline Viewer**: Embeds a 3D interactive background.
 - **MongoDB**: Handles database operations for image management and admin authentication.
 - **React Context API**: Manages authentication state.
+- **Natural Language Processing (NLP)** – Powers the chatbot's ability to understand user needs and provide relevant product suggestions.
+- **AI Chatbot Framework** – Facilitates intelligent, conversational interaction with users.
 
 ## Installation
 

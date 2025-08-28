@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User } from '@supabase/supabase-js';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
+interface ExtendedUser extends SupabaseUser {
+  name?: string;
+}
+
 type AuthContextType = {
-  user: User | null;
+  user: ExtendedUser | null;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name: string, phone: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -12,7 +16,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
 
   useEffect(() => {
     // Check active sessions and sets the user
@@ -21,8 +25,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // Listen for changes on auth state (login, sign out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        // Fetch user profile data to get the name
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('name')
+          .eq('id', session.user.id)
+          .single();
+        
+        const extendedUser: ExtendedUser = {
+          ...session.user,
+          name: profile?.name || session.user.user_metadata?.name
+        };
+        setUser(extendedUser);
+      } else {
+        setUser(null);
+      }
     });
 
     return () => subscription.unsubscribe();

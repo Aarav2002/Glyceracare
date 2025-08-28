@@ -14,3 +14,111 @@
 .animate-scroll {
   animation: scroll 30s linear infinite;
 }
+
+/* Performance-optimized Spline viewer styles */
+spline-viewer {
+  display: block;
+  min-width: 300px;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+  /* Reduce repaints */
+  contain: layout style paint;
+}
+
+spline-viewer canvas {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 300px !important;
+  min-height: 300px !important;
+  display: block !important;
+  /* GPU acceleration for canvas */
+  transform: translateZ(0);
+  will-change: transform;
+  /* Performance optimizations */
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+}
+
+/* Quality-based performance settings */
+spline-viewer[data-quality="low"] canvas {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+}
+
+spline-viewer[data-quality="medium"] canvas {
+  image-rendering: auto;
+}
+
+spline-viewer[data-quality="high"] canvas {
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Reduce CPU usage when paused */
+spline-viewer[data-paused="true"] {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Ensure proper WebGL context initialization */
+spline-viewer[data-loaded="false"] {
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+}
+
+/* Optimized iframe styles */
+iframe {
+  border: none;
+  outline: none;
+  min-width: 300px;
+  min-height: 300px;
+  display: block;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+  /* Reduce repaints */
+  contain: layout style paint;
+}
+
+/* Prevent excessive repaints and reflows */
+.performance-optimized {
+  contain: layout style paint;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce animation costs */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  spline-viewer {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Low performance device optimizations */
+@media (max-width: 768px) {
+  spline-viewer[data-quality="auto"] {
+    /* Force lower quality on mobile */
+    image-rendering: pixelated;
+  }
+}
+
+/* Memory usage optimization */
+@media (max-device-memory: 4) {
+  spline-viewer {
+    /* Reduce quality for devices with limited memory */
+    image-rendering: optimizeSpeed;
+  }
+}

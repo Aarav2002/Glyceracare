@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -9,14 +9,28 @@ import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { ProcessPage } from './pages/ProcessPage';
+import { CheckoutPage } from './pages/CheckoutPage';
 import { ProtectedAdminRoute } from './components/ProtectedAdminRoute';
-// @ts-expect-error Planned for future use
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { CartPage } from './components/CartPage';
+import { PerformanceSettingsModal, PerformanceSettingsButton } from './components/PerformanceSettings';
 
 function App() {
+  const [isPerformanceSettingsOpen, setIsPerformanceSettingsOpen] = useState(false);
+  const [performanceSettings, setPerformanceSettings] = useState({
+    quality: 'medium' as 'low' | 'medium' | 'high',
+    pauseWhenHidden: true,
+    enableLazyLoading: true
+  });
   return (
-    <Router>
+    <Router 
+      basename="/Glyceracare"
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <AuthProvider>
         <CartProvider>
           <div className="min-h-screen flex flex-col">
@@ -27,7 +41,9 @@ function App() {
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/process" element={<ProcessPage />} />
                 <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route 
                   path="/admin" 
                   element={
@@ -40,6 +56,16 @@ function App() {
             </main>
             <Footer />
           </div>
+          
+          {/* Performance Settings */}
+          <PerformanceSettingsButton 
+            onOpenSettings={() => setIsPerformanceSettingsOpen(true)}
+          />
+          <PerformanceSettingsModal
+            isOpen={isPerformanceSettingsOpen}
+            onClose={() => setIsPerformanceSettingsOpen(false)}
+            onSettingsChange={setPerformanceSettings}
+          />
         </CartProvider>
       </AuthProvider>
     </Router>

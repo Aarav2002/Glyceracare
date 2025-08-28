@@ -1,17 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { OptimizedSplineViewer } from './OptimizedSplineViewer';
 
 export function Hero() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Load the Spline viewer script
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = "https://unpkg.com/@splinetool/viewer@1.9.59/build/spline-viewer.js";
-    document.body.appendChild(script);
-  }, []);
 
   return (
     <div className="relative h-screen flex"> {/* Flex container to split content */}
@@ -37,15 +30,28 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Right Section: Spline Viewer */}
-      <div className="flex-1 h-full">
-        <spline-viewer
+      {/* Right Section: Optimized Spline Viewer */}
+      <div className="flex-1 h-full relative bg-gradient-to-br from-gray-900 to-black">
+        <OptimizedSplineViewer
           url="https://prod.spline.design/ac9R2h3nuaPZMq4P/scene.splinecode"
           style={{
             width: '100%',
             height: '100%',
+            minHeight: '500px',
           }}
-        ></spline-viewer>
+          className="w-full h-full"
+          quality="medium"
+          enableLazyLoading={true}
+          enableIntersectionObserver={true}
+          fallbackContent={
+            <div className="w-full h-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center">
+              <div className="text-white text-center">
+                <h3 className="text-2xl font-bold mb-2">Natural Beauty</h3>
+                <p>Handcrafted Soaps</p>
+              </div>
+            </div>
+          }
+        />
       </div>
 
       {/* Black Stripe Overlay at the Bottom */}

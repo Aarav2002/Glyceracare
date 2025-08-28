@@ -3,10 +3,15 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 interface CartItem {
   id: number;
   name: string;
+  description?: string;
   price: string;
   quantity: number;
   weight: string;
   min_quantity: number;
+  deliveryDate?: string;
+  deliveryCharges?: string;
+  discount?: number;
+  originalPrice?: number;
 }
 
 interface CartContextType {

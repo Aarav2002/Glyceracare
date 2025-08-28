@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { Product } from '../types/product';
-import { ShoppingCart, Plus, Minus } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Tag } from 'lucide-react';
+import { calculateDiscountedPrice, formatPrice, calculateSavings } from '../utils/priceCalculations';
 
 interface ProductCardProps {
   product: Product;
@@ -32,14 +33,21 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const handleAddToCart = () => {
-    const price = product.weights[selectedWeight];
+    const originalPrice = product.weights[selectedWeight];
+    const priceCalc = calculateDiscountedPrice(originalPrice, product.discount);
+    
     addToCart({
       id: product.id,
       name: product.name,
-      price: price.toString(),
+      description: product.description,
+      price: formatPrice(priceCalc.finalPrice),
       quantity: quantity,
       weight: selectedWeight,
-      min_quantity: product.min_quantity || 1, // Pass min_quantity
+      min_quantity: product.min_quantity || 1,
+      deliveryDate: 'Tomorrow',
+      deliveryCharges: 'Free delivery',
+      discount: priceCalc.discountAmount,
+      originalPrice: originalPrice
     });
   };
   
@@ -71,12 +79,67 @@ export function ProductCard({ product }: ProductCardProps) {
             onChange={(e) => setSelectedWeight(e.target.value)}
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md"
           >
-            {Object.entries(product.weights).map(([weight, price]) => (
-              <option key={weight} value={weight}>
-                {weight} - ₹{price}
-              </option>
-            ))}
+            {Object.entries(product.weights).map(([weight, price]) => {
+              const priceCalc = calculateDiscountedPrice(price, product.discount);
+              return (
+                <option key={weight} value={weight}>
+                  {weight} - {priceCalc.discountAmount > 0 ? (
+                    <>
+                      {formatPrice(priceCalc.finalPrice)} 
+                      <span style={{textDecoration: 'line-through', color: '#999'}}>
+                        {formatPrice(priceCalc.originalPrice)}
+                      </span>
+                    </>
+                  ) : (
+                    formatPrice(price)
+                  )}
+                </option>
+              );
+            })}
           </select>
+        </div>
+
+        {/* Discount Badge */}
+        {product.discount && product.discount.active && (
+          <div className="mt-2">
+            <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+              <Tag className="w-3 h-3 mr-1" />
+              {product.discount.type === 'percentage' 
+                ? `${product.discount.value}% OFF` 
+                : `₹${product.discount.value} OFF`
+              }
+            </div>
+            <p className="text-xs text-gray-500 mt-1">{product.discount.description}</p>
+          </div>
+        )}
+
+        {/* Price Display */}
+        <div className="mt-3">
+          {(() => {
+            const originalPrice = product.weights[selectedWeight];
+            const priceCalc = calculateDiscountedPrice(originalPrice, product.discount);
+            const savings = calculateSavings(priceCalc.originalPrice, priceCalc.finalPrice);
+            
+            return (
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg font-bold text-teal-600">
+                    {formatPrice(priceCalc.finalPrice)}
+                  </span>
+                  {priceCalc.discountAmount > 0 && (
+                    <span className="text-sm text-gray-500 line-through">
+                      {formatPrice(priceCalc.originalPrice)}
+                    </span>
+                  )}
+                </div>
+                {savings.amount > 0 && (
+                  <p className="text-xs text-green-600 font-medium">
+                    You save {formatPrice(savings.amount)} ({savings.percentage}%)
+                  </p>
+                )}
+              </div>
+            );
+          })()} 
         </div>
 
         <div className="mt-4">

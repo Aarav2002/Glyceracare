@@ -25,7 +25,6 @@ function App() {
   });
   return (
     <Router 
-      basename="/Glyceracare"
       future={{
         v7_startTransition: true,
         v7_relativeSplatPath: true

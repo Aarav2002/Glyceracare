@@ -19,7 +19,7 @@ GlyceraCare is a modern web project that showcases the brand's commitment to nat
 </div>
 
 ## Live Link
-https://aarav2002.github.io/Glyceracare/
+https://glyceracare.vercel.app/
 
 ## Table of Contents
 
